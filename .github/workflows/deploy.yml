@@ -9,15 +9,21 @@ jobs:
 upload:
 runs-on: ubuntu-latest
 
-
 steps:
   - name: Checkout code
     uses: actions/checkout@v3
 
-  - name: Show files
-    run: ls -R
+  - name: Show all files (DEBUG)
+    run: |
+      echo "Listing all files in repo:"
+      ls -R
 
-  - name: Install dependencies
+  - name: Set up Python
+    uses: actions/setup-python@v4
+    with:
+      python-version: '3.9'
+
+  - name: Install boto3
     run: pip install boto3
 
   - name: Configure AWS credentials
@@ -27,6 +33,5 @@ steps:
       aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
       aws-region: ap-south-1
 
-  - name: Run script
+  - name: Run deploy script
     run: python deploy.py
-
